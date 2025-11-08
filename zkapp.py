@@ -84,6 +84,13 @@ def main() -> None:
     print(f"🏗️  Confirmation Block: {data['confirm_block']}")
     print(f"📏 Block Difference: {data['block_diff']}")
     print(f"📦 Status: {data['status']}")
+      # ✅ New: Display confirmation block timestamp
+    try:
+        block_data = w3.eth.get_block(data["confirm_block"])
+        confirm_time = datetime.utcfromtimestamp(block_data.timestamp).isoformat() + "Z"
+        print(f"🕓 Confirmation Timestamp: {confirm_time}")
+    except Exception:
+        print("⚠️ Could not retrieve confirmation block timestamp.")
 
     # ✅ Add confirmation time (in seconds)
     try:
