@@ -84,7 +84,17 @@ def main() -> None:
     print(f"🏗️  Confirmation Block: {data['confirm_block']}")
     print(f"📏 Block Difference: {data['block_diff']}")
     print(f"📦 Status: {data['status']}")
-
+# Show gas usage and estimated cost
+    try:
+        receipt = w3.eth.get_transaction_receipt(args.tx)
+        gas_used = receipt.gasUsed
+        gas_price = getattr(receipt, "effectiveGasPrice", w3.eth.gas_price)
+        cost_eth = w3.from_wei(gas_used * gas_price, "ether")
+        print(f"⛽ Gas Used: {gas_used}")
+        print(f"💰 Estimated Cost: {cost_eth} ETH")
+    except Exception:
+        print("⚠️ Could not fetch gas usage or cost information.")
+        
     # ✅ Add confirmation time (in seconds)
     try:
         block_time = w3.eth.get_block(data['confirm_block']).timestamp - w3.eth.get_block(data['submit_block']).timestamp
